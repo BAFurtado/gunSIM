@@ -16,7 +16,7 @@ def target_sankey(agent_m, agent_v):
 
 
 class GunSIM:
-    def __init__(self, policy_mugger, policy_victim, has_gun=.0057, prob_matching=.33):
+    def __init__(self, policy_mugger, policy_victim, has_gun=.5, prob_matching=.33):
         self.policy_mugger = policy_mugger
         self.policy_victim = policy_victim
         self.victims = list()

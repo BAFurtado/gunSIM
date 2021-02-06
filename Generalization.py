@@ -87,7 +87,7 @@ def sankey_prep():
                    'rgba(222, 27, 216, 0.23)']
         ))])
     fig.update_layout(title_text="GunSIM for classic Mugging Game(BRAMS, 1993)", font_size=15)
-    fig.show()
+    # fig.show()
 
 
 def save_res(i, ii, iii, iv):
@@ -146,28 +146,31 @@ def run_model(policy_mugger, policy_victim, years=10, prob_matching=.33, gun_rat
     sankey_prep()
     # Here we remove the data by erasing all the files generated in a run, so a new run wont conflict with any
     # preexisting data in this files
-    os.remove("start.txt")
-    os.remove('step_mugging.txt')
-    os.remove('target.txt')
+    try:
+        os.remove("start.txt")
+        os.remove('step_mugging.txt')
+        os.remove('target.txt')
+    except FileNotFoundError:
+        pass
 
 
 if __name__ == '__main__':
     # sankey_prep()
-    run_model(False, False)
+    run_model(True, True)
     # print('\n')
     # run_model(True, True)
     # print('\n')
     # run_model(False, True)
     # print('\n')
     # run_model(True, False)
-    # n_jobs = 3
+    n_jobs = 3
     # n = 10
     # s = pd.DataFrame()
-    # with Parallel(n_jobs=n_jobs) as parallel:
-    #     # parallel(delayed(r)(parametros da função) for i in ITERADOR: range(1000)
-    #     # O s vai ser uma lista contendo a instância o objeto do tipo Gunsim
-    #     # s = parallel(delayed(run_model)(i[0], i[1]) for i in product([True, False], repeat=2) for j in range(1000))
-    #     s = parallel(delayed(run_model)(True, True) for j in range(1000))
+    with Parallel(n_jobs=n_jobs) as parallel:
+        # parallel(delayed(r)(parametros da função) for i in ITERADOR: range(1000)
+        # O s vai ser uma lista contendo a instância o objeto do tipo Gunsim
+        s = parallel(delayed(run_model)(i[0], i[1]) for i in product([True, False], repeat=2) for j in range(1))
+        s = parallel(delayed(run_model)(True, True) for j in range(1))
     # has_g = 0.0057
     # for i in range(10):
     #     run_model(True, True, gun_rate=has_g)
